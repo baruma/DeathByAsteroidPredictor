@@ -4,6 +4,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
+// Picture Of The Day Bindings Below
+// TODO: IMAGE CONVERSION IS DONE HERE WITH PICASSO
+
+//@BindingAdapter("activity_main_image_of_the_day_layout") {
+//    fun bindPictureOfTheDayToImageView(imageView: ImageView) {
+//        imageView.setImageResource(())
+//    }
+//}
+
+// Asteroid Related Bindings Below
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {

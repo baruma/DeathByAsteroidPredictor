@@ -18,7 +18,10 @@ import retrofit2.Response
 
 class MainViewModel : ViewModel() {
 
+    //internal
     private val _pictureResponse = MutableLiveData<PictureOfDay>()
+
+    // exposed/public
     val pictureResponse: LiveData<PictureOfDay>
         get() = _pictureResponse
 
@@ -27,43 +30,25 @@ class MainViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
-    // Iniitalized so that this is called immediately.
     init {
         getPictureOfTheDay()
     }
-// AFTER ADDING COROUTINES WE'VE BEEN HITTING ERRORS.
+
     private fun getPictureOfTheDay() {
         viewModelScope.launch {
             try {
-                var photoResult = PictureOfDayAPI.retrofitService.getPictureOfDay()
-                _pictureResponse.value = pictureResponse.value
+                val pictureOfDay = PictureOfDayAPI.retrofitService.getPictureOfDay()
+                _pictureResponse.value = pictureOfDay
             } catch (e: Exception) {
                 print("Failure: ${e.message}")
 
             }
         }
-        // getPictureOfDayStringData creates a call object.
-        // enqeue starts a network request on a background thread.
-//        PictureOfDayAPI.retrofitService.getPictureOfDay().enqueue(object : Callback<PictureOfDay> {
-//            override fun onResponse(call: Call<PictureOfDay>, response: Response<PictureOfDay>) {
-//
-//
-
-//                if (!response.isSuccessful) {
-//                    print("UNSUCCESSFUL CALL")
-//                }
-//
-//                print("SUCCESSFUL CALL")
-//                print(response.body().toString())
-//
-//                _pictureResponse.value = response.body()
-//            }
-//
-//            override fun onFailure(call: Call<PictureOfDay>, t: Throwable) {
-//                Log.e("ERROR", t.toString())
-//            }
-//
-//        })
     }
+
+//    fun configure(pictureOfDay: PictureOfDay) {
+//        //binding.shoe = shoe
+//        binding
+//    }
 
 }

@@ -6,8 +6,6 @@ import com.udacity.asteroidradar.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel = MainViewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

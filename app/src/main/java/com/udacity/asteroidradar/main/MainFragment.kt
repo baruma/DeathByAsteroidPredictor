@@ -44,6 +44,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.pictureResponse.observe(binding.lifecycleOwner!!, observer)
+        
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

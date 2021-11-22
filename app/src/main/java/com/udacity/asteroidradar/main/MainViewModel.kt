@@ -25,7 +25,6 @@ class MainViewModel : ViewModel() {
     val pictureResponse: LiveData<PictureOfDay>
         get() = _pictureResponse
 
-
     private val _status = MutableLiveData<String>()
     val status: LiveData<String>
         get() = _status

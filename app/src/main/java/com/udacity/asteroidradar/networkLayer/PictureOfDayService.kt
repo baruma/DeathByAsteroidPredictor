@@ -8,14 +8,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-
-private val BASE_URL = "https://api.nasa.gov/planetary/"
+private const val BASE_URL = "https://api.nasa.gov/planetary/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-val retrofitPictureOfDay = Retrofit.Builder()
+val retrofitPictureOfDayService: Retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
@@ -28,7 +27,7 @@ interface PictureOfDayService {
 
 object PictureOfDayAPI {
     val retrofitService: PictureOfDayService by lazy {
-        retrofitPictureOfDay.create(PictureOfDayService::class.java)
+        retrofitPictureOfDayService.create(PictureOfDayService::class.java)
     }
 }
 

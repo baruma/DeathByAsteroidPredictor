@@ -6,9 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.networkLayer.AsteroidAPI
 import com.udacity.asteroidradar.networkLayer.PictureOfDayAPI
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainViewModel : ViewModel() {
@@ -43,11 +47,16 @@ class MainViewModel : ViewModel() {
     }
 
     private fun getAsteroidPayload() {
+
+        val simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
+        val currentDate: String = simpleDateFormat.format(Date())
+
         viewModelScope.launch {
             try {
-                val asteroidPayload = AsteroidAPI.retrofitService.getAsteroids()
-                print(asteroidPayload.toString())
-                _asteroidResponse.value = asteroidPayload
+                val asteroidPayload = AsteroidAPI.retrofitService.getAsteroids(currentDate)
+                val jsonObject: JSONObject = JSONObject(asteroidPayload)
+                  _asteroidResponse.value = parseAsteroidsJsonResult(jsonObject)
+
             } catch(exception: Exception) {
                 print("Failure: ${exception.message}")
             }

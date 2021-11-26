@@ -41,13 +41,11 @@ class MainViewModel : ViewModel() {
                 _pictureResponse.value = pictureOfDay
             } catch (exception: Exception) {
                 print("Failure: ${exception.message}")
-
             }
         }
     }
 
     private fun getAsteroidPayload() {
-
         val simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
         val currentDate: String = simpleDateFormat.format(Date())
 
@@ -56,6 +54,7 @@ class MainViewModel : ViewModel() {
                 val asteroidPayload = AsteroidAPI.retrofitService.getAsteroids(currentDate)
                 val jsonObject: JSONObject = JSONObject(asteroidPayload)
                   _asteroidResponse.value = parseAsteroidsJsonResult(jsonObject)
+                print(parseAsteroidsJsonResult(jsonObject))
 
             } catch(exception: Exception) {
                 print("Failure: ${exception.message}")

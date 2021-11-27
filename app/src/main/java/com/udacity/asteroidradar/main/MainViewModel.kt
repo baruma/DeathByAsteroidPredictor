@@ -29,6 +29,7 @@ class MainViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
+
     init {
         getPictureOfTheDay()
         getAsteroidPayload()

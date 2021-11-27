@@ -72,7 +72,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.4.0-alpha03"
     kapt 'androidx.room:room-compiler:2.4.0-alpha03'
 
-    implementation "android.arch.work:work-runtime-ktx:1.0.1"
+    implementation 'androidx.room:room-ktx:2.4.0-alpha03'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

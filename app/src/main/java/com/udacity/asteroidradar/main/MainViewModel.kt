@@ -16,22 +16,30 @@ import java.util.*
 
 class MainViewModel(val database: AsteroidDAO, application: Application) : AndroidViewModel(application) {
 
+    // Here in the VM, we are impelementing a UIHander that will save the Asteroids to the Database.  We then have to call Asteroid
+    // objects from the room database to shwo on the recyclerview
+
     private val _pictureResponse = MutableLiveData<PictureOfDay>()
+
     val pictureResponse: LiveData<PictureOfDay>
         get() = _pictureResponse
 
     private val _asteroidResponse = MutableLiveData<List<Asteroid>>()
+
     val asteroidResponse: LiveData<List<Asteroid>>
         get() = _asteroidResponse
 
+//    private val savedDatabaseAsteroids = database.getAllAsteroids()
+
     private val _status = MutableLiveData<String>()
+
     val status: LiveData<String>
         get() = _status
 
 
     init {
         getPictureOfTheDay()
-        getAsteroidPayload()
+        saveAsteroidPayload()
     }
 
     private fun getPictureOfTheDay() {
@@ -45,7 +53,7 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
         }
     }
 
-    private fun getAsteroidPayload() {
+    private fun saveAsteroidPayload() {
         val simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
         val currentDate: String = simpleDateFormat.format(Date())
 
@@ -54,11 +62,20 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
                 val asteroidPayload = AsteroidAPI.retrofitService.getAsteroids(currentDate)
                 val jsonObject: JSONObject = JSONObject(asteroidPayload)
                   _asteroidResponse.value = parseAsteroidsJsonResult(jsonObject)
-                print(parseAsteroidsJsonResult(jsonObject))
+
+                val asteroidsToBeSaved = database.insertAsteroids(_asteroidResponse.value!!)
 
             } catch(exception: Exception) {
                 print("Failure: ${exception.message}")
             }
         }
     }
+
+    private fun loadAsteroidPayload() {
+        viewModelScope.launch {
+            val asteroidsToLoad = database.getAllAsteroids()
+
+        }
+    }
+
 }

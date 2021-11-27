@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.AsteroidDatabase
@@ -17,13 +16,12 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 
 class MainFragment : Fragment() {
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: AsteroidRecyclerAdapter
 
     private lateinit var binding: FragmentMainBinding
+
+    private lateinit var mainViewModel: MainViewModel
 
 // step 1
     private val observer: Observer<PictureOfDay> =
@@ -38,11 +36,10 @@ class MainFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val datasource = AsteroidDatabase.getInstance(application).asteroidDAO
         val viewModelFactory = MainViewModelFactory(datasource, application)
-        val mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
+        binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-
         setHasOptionsMenu(true)
 
         return binding.root
@@ -51,7 +48,7 @@ class MainFragment : Fragment() {
     // step 2
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.pictureResponse.observe(binding.lifecycleOwner!!, observer)
+        mainViewModel.pictureResponse.observe(binding.lifecycleOwner!!, observer)
         
     }
 

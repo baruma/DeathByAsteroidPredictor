@@ -2,11 +2,15 @@ package com.udacity.asteroidradar
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.Query
 
 @Dao
 interface AsteroidDAO {
     @Insert
-    fun insertAsteroid(asteroid: Asteroid)
+    suspend fun insertAsteroids(asteroid: List<Asteroid>)
+
+    @Query("SELECT * FROM asteroid_table ORDER BY id DESC")
+    suspend fun getAllAsteroids(): List<Asteroid>
 
 // TODO: Fetch and display the asteroids from the database and only fetch the asteroids from today onwards,
 //  ignoring asteroids before today.

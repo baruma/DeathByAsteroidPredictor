@@ -6,8 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.AsteroidDatabase
 import com.udacity.asteroidradar.AsteroidRecyclerAdapter
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.R
@@ -32,6 +34,12 @@ class MainFragment : Fragment() {
     // If I'm inflating the entire fragment is it necessary to inflate the RecyclerView as well
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+
+        val application = requireNotNull(this.activity).application
+        val datasource = AsteroidDatabase.getInstance(application).asteroidDAO
+        val viewModelFactory = MainViewModelFactory(datasource, application)
+        val mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 

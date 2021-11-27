@@ -1,10 +1,9 @@
 package com.udacity.asteroidradar.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.AsteroidDAO
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.networkLayer.AsteroidAPI
@@ -15,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainViewModel : ViewModel() {
+class MainViewModel(val database: AsteroidDAO, application: Application) : AndroidViewModel(application) {
 
     private val _pictureResponse = MutableLiveData<PictureOfDay>()
     val pictureResponse: LiveData<PictureOfDay>

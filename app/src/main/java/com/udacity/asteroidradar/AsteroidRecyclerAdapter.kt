@@ -27,13 +27,18 @@ class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : RecyclerView.
         fun bind(asteroid: Asteroid) {
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
-            binding.asteroid = asteroid
+            binding.asteroidName.text = asteroid.codename
+            binding.asteroidDate.text = asteroid.closeApproachDate.toString()
+
             binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidViewHolder {
         val binding: AsteroidCardBinding = inflate(LayoutInflater.from(parent.context), R.layout.asteroid_card, parent, false)
+//        mainViewModel.pictureResponse.observe(binding.lifecycleOwner!!, observer)
+
+
         return AsteroidViewHolder(binding)
     }
 

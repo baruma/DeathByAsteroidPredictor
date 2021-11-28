@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.AsteroidDatabase
@@ -17,7 +18,7 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
-    private lateinit var adapter: AsteroidRecyclerAdapter
+    private lateinit var asteroidAdapter: AsteroidRecyclerAdapter
 
     private lateinit var binding: FragmentMainBinding
 
@@ -40,6 +41,11 @@ class MainFragment : Fragment() {
 
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
+
+        asteroidAdapter = AsteroidRecyclerAdapter(mutableListOf())
+        binding.asteroidRecycler.layoutManager = LinearLayoutManager(context)
+        binding.asteroidRecycler.adapter = asteroidAdapter
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -49,7 +55,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.pictureResponse.observe(binding.lifecycleOwner!!, observer)
-        
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

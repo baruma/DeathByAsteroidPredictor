@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidDAO
@@ -29,8 +30,6 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
     val asteroidResponse: LiveData<List<Asteroid>>
         get() = _asteroidResponse
 
-//    private val savedDatabaseAsteroids = database.getAllAsteroids()
-
     private val _status = MutableLiveData<String>()
 
     val status: LiveData<String>
@@ -40,6 +39,7 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
     init {
         getPictureOfTheDay()
         saveAsteroidPayload()
+        loadAsteroidPayload()
     }
 
     private fun getPictureOfTheDay() {
@@ -63,7 +63,7 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
                 val jsonObject: JSONObject = JSONObject(asteroidPayload)
                   _asteroidResponse.value = parseAsteroidsJsonResult(jsonObject)
 
-                val asteroidsToBeSaved = database.insertAsteroids(_asteroidResponse.value!!)
+                database.insertAsteroids(_asteroidResponse.value!!)
 
             } catch(exception: Exception) {
                 print("Failure: ${exception.message}")
@@ -71,10 +71,10 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
         }
     }
 
+    // This function needs to present asteroids in recyclerview
     private fun loadAsteroidPayload() {
         viewModelScope.launch {
-            val asteroidsToLoad = database.getAllAsteroids()
-
+           _asteroidResponse.value =  database.getAllAsteroids()
         }
     }
 

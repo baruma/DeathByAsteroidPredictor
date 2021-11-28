@@ -1,11 +1,15 @@
 package com.udacity.asteroidradar
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
 interface AsteroidDAO {
+
+    // You can either have coroutines and no livedata or wrap the objects as livedata and not use coroutines
+    // because livedata objects are also observers
     @Insert
     suspend fun insertAsteroids(asteroid: List<Asteroid>)
 

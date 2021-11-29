@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -9,10 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import com.udacity.asteroidradar.AsteroidDatabase
-import com.udacity.asteroidradar.AsteroidRecyclerAdapter
-import com.udacity.asteroidradar.PictureOfDay
-import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.*
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 
@@ -24,7 +22,7 @@ class MainFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
 
-// step 1
+    // step 1
     private val observer: Observer<PictureOfDay> =
         Observer<PictureOfDay> { pictureOfTheDay ->
            Picasso.with(context).load(pictureOfTheDay.url).into(binding.activityMainImageOfTheDay)

@@ -19,7 +19,6 @@ val retrofitPictureOfDayService: Retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-// Got a 403 error code earlier because I had a space between the '=' and Key.
 interface PictureOfDayService {
     @GET("apod?api_key=${BuildConfig.NASA_KEY}")
     suspend fun getPictureOfDay(): PictureOfDay

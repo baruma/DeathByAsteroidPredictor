@@ -2,7 +2,6 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -33,7 +32,7 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         val application = requireNotNull(this.activity).application
-        val datasource = AsteroidDatabase.getInstance(application).asteroidDAO
+        val datasource = AsteroidDatabase.getDatabase(application).asteroidDAO
         val viewModelFactory = MainViewModelFactory(datasource, application)
         mainViewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
@@ -63,6 +62,7 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return true
     }
+
 }
 
 

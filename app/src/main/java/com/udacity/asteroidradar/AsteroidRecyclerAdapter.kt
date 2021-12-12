@@ -1,13 +1,17 @@
 package com.udacity.asteroidradar
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil.inflate
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.databinding.AsteroidCardBinding
+import com.udacity.asteroidradar.detail.DetailFragment
 
 // Extending a class gives more specialized behavior.  It also lets you override existing methods.
 // This is an alternative to Inheritance or design patterns like Decorator.
@@ -18,7 +22,6 @@ fun bindRecylerView(recyclerView: RecyclerView, listOfAsteroids: List<Asteroid>?
     val adapter = recyclerView.adapter as AsteroidRecyclerAdapter
     adapter.submitList(listOfAsteroids)
 }
-
 
 class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : ListAdapter<Asteroid, AsteroidRecyclerAdapter.AsteroidViewHolder>(DiffCallback) {
 
@@ -32,15 +35,24 @@ class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : ListAdapter<A
         }
     }
 
-    class AsteroidViewHolder(private var binding: AsteroidCardBinding): RecyclerView.ViewHolder(binding.root) {
+    class AsteroidViewHolder(private var binding: AsteroidCardBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         fun bind(asteroid: Asteroid) {
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
 
+            // TODO: BIND REST OF ELEMENTS HERE.
             binding.asteroidName.text = asteroid.codename
             binding.asteroidDate.text = asteroid.closeApproachDate.toString()
-
             binding.executePendingBindings()
+
+        }
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            TODO("Not yet implemented")
         }
     }
 
@@ -51,7 +63,21 @@ class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : ListAdapter<A
     }
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
+        val asteroid = getItem(position)
+        val bundle = Bundle()
+        bundle.putParcelable(DetailFragment.ARG_ASTEROID, asteroid)
+
+        holder.itemView.setOnClickListener {
+            it.findNavController().navigate(R.id.action_showDetail)
+        }
+
         holder.bind(getItem(position))
     }
+
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+
 
 }

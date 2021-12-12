@@ -1,11 +1,9 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.util.Log
+import android.os.Bundle
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.AsteroidDAO
-import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.*
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.networkLayer.AsteroidAPI
 import com.udacity.asteroidradar.networkLayer.PictureOfDayAPI
@@ -15,31 +13,31 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainViewModel(val database: AsteroidDAO, application: Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Here in the VM, we are impelementing a UIHander that will save the Asteroids to the Database.  We then have to call Asteroid
-    // objects from the room database to shwo on the recyclerview
+    private val database =  AsteroidDatabase.getDatabase(application)
+    private val asteroidsRepository = AsteroidRepository(database)
 
     private val _pictureResponse = MutableLiveData<PictureOfDay>()
-
     val pictureResponse: LiveData<PictureOfDay>
         get() = _pictureResponse
 
     private val _asteroidResponse = MutableLiveData<List<Asteroid>>()
-
     val asteroidResponse: LiveData<List<Asteroid>>
         get() = _asteroidResponse
 
     private val _status = MutableLiveData<String>()
-
     val status: LiveData<String>
         get() = _status
 
+    // create an asteroids variable that holds onto livedata asteroids from the viewmodel
 
     init {
-        getPictureOfTheDay()
-        saveAsteroidPayload()
-        loadAsteroidPayload()
+        viewModelScope.launch {
+            getPictureOfTheDay()
+            asteroidsRepository.refreshAsteroids()
+            _asteroidResponse.value = asteroidsRepository.getAsteroids()
+        }
     }
 
     private fun getPictureOfTheDay() {
@@ -50,31 +48,6 @@ class MainViewModel(val database: AsteroidDAO, application: Application) : Andro
             } catch (exception: Exception) {
                 print("Failure: ${exception.message}")
             }
-        }
-    }
-
-    private fun saveAsteroidPayload() {
-        val simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
-        val currentDate: String = simpleDateFormat.format(Date())
-
-        viewModelScope.launch {
-            try {
-                val asteroidPayload = AsteroidAPI.retrofitService.getAsteroids(currentDate)
-                val jsonObject: JSONObject = JSONObject(asteroidPayload)
-                  _asteroidResponse.value = parseAsteroidsJsonResult(jsonObject)
-
-                database.insertAsteroids(_asteroidResponse.value!!)
-
-            } catch(exception: Exception) {
-                print("Failure: ${exception.message}")
-            }
-        }
-    }
-
-    // This function needs to present asteroids in recyclerview
-    private fun loadAsteroidPayload() {
-        viewModelScope.launch {
-           _asteroidResponse.value =  database.getAllAsteroids()
         }
     }
 

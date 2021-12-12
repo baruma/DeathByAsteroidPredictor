@@ -17,7 +17,7 @@ abstract class AsteroidDatabase: RoomDatabase() {
         // Changes in one thread will be present to all other threads.  all writes/reads will be done from main
         private var INSTANCE: AsteroidDatabase? = null  // Instance keeps a reference to the database
 
-        fun getInstance(context: Context): AsteroidDatabase { // This is a DB builder
+        fun getDatabase(context: Context): AsteroidDatabase { // This is a DB builder
             synchronized(this) {
                 var instance = INSTANCE
 
@@ -33,6 +33,4 @@ abstract class AsteroidDatabase: RoomDatabase() {
             }
         }
     }
-
-
 }

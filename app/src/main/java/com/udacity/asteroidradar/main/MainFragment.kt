@@ -14,11 +14,10 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 
 class MainFragment : Fragment() {
-    private var recyclerView: RecyclerView? = null
+//    private var recyclerView: RecyclerView? = null
+
     private lateinit var asteroidAdapter: AsteroidRecyclerAdapter
-
     private lateinit var binding: FragmentMainBinding
-
     private lateinit var mainViewModel: MainViewModel
 
     // step 1
@@ -39,6 +38,7 @@ class MainFragment : Fragment() {
         binding.viewModel = mainViewModel
         binding.lifecycleOwner = this
 
+//        asteroidAdapter = AsteroidRecyclerAdapter()
         asteroidAdapter = AsteroidRecyclerAdapter(mutableListOf())
         binding.asteroidRecycler.layoutManager = LinearLayoutManager(context)
         binding.asteroidRecycler.adapter = asteroidAdapter

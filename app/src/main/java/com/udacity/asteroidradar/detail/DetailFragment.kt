@@ -21,17 +21,14 @@ class DetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this.arguments?.let { bundle ->
+        arguments?.let { bundle ->
             asteroid = bundle.getParcelable<Asteroid>(ARG_ASTEROID)!!
-//            Timber.d(fish.toString())
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
-        val asteroid = DetailFragmentArgs.fromBundle(requireArguments()).selectedAsteroid
 
         binding.asteroid = asteroid
 

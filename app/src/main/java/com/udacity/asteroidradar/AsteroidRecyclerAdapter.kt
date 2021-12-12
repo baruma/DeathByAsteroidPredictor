@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.navigation.findNavController
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.databinding.AsteroidCardBinding
 import com.udacity.asteroidradar.detail.DetailFragment
+
 
 // Extending a class gives more specialized behavior.  It also lets you override existing methods.
 // This is an alternative to Inheritance or design patterns like Decorator.
@@ -43,8 +45,14 @@ class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : ListAdapter<A
             // TODO: BIND REST OF ELEMENTS HERE.
             binding.asteroidName.text = asteroid.codename
             binding.asteroidDate.text = asteroid.closeApproachDate.toString()
-            binding.executePendingBindings()
 
+            if (asteroid.isPotentiallyHazardous == true) {
+                binding.statusImage.setImageResource(R.drawable.ic_status_potentially_hazardous)
+            } else {
+                binding.statusImage.setImageResource(R.drawable.ic_status_normal)
+            }
+
+            binding.executePendingBindings()
         }
 
         init {
@@ -68,7 +76,7 @@ class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : ListAdapter<A
         bundle.putParcelable(DetailFragment.ARG_ASTEROID, asteroid)
 
         holder.itemView.setOnClickListener {
-            it.findNavController().navigate(R.id.action_showDetail)
+            it.findNavController().navigate(R.id.action_showDetail, bundle)
         }
 
         holder.bind(getItem(position))

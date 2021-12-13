@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar
 
-import androidx.lifecycle.LiveData
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.networkLayer.AsteroidAPI
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +23,12 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     // repositories are caches.
 
-    suspend fun getAsteroids() = database.asteroidDAO.getAllAsteroids()
+    val formattedDate= SimpleDateFormat("yyyy-MM-dd")
+    val currentDate: String = formattedDate.format(Date())
+
+    suspend fun getAsteroids() = database.asteroidDAO.getAsteroidsFuture(currentDate)
 
     suspend fun refreshAsteroids() {
-        val simpleDateFormat= SimpleDateFormat("yyyy-MM-dd")
-        val currentDate: String = simpleDateFormat.format(Date())
-
         withContext(Dispatchers.IO) {
             try {
                 val asteroidPayload = AsteroidAPI.retrofitService.getAsteroids(currentDate)

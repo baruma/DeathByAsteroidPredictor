@@ -14,7 +14,7 @@
         android:layout_height="100dp"
         android:layout_margin="5dp"
         android:contentDescription="Cell with asteroid name, id and threat type."
-        app:cardBackgroundColor="#FF916F"
+        app:cardBackgroundColor="#B695F1"
         app:cardCornerRadius="15dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout

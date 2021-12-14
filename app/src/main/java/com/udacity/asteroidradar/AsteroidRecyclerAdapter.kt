@@ -42,9 +42,7 @@ class AsteroidRecyclerAdapter(private val mList: List<Asteroid>) : ListAdapter<A
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
 
-            // TODO: BIND REST OF ELEMENTS HERE.
-            binding.asteroidName.text = asteroid.codename
-            binding.asteroidDate.text = asteroid.closeApproachDate.toString()
+            binding.asteroid = asteroid
 
             if (asteroid.isPotentiallyHazardous == true) {
                 binding.statusImage.setImageResource(R.drawable.ic_status_potentially_hazardous)

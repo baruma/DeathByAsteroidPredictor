@@ -32,6 +32,7 @@
 
             <TextView
                 android:id="@+id/textView"
+                android:contentDescription="label that reads, Image of the Day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -58,6 +59,7 @@
 
         <ProgressBar
             android:id="@+id/status_loading_wheel"
+            android:contentDescription="Loading Progress Bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
